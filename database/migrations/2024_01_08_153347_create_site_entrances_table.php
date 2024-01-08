@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tracks', function (Blueprint $table) {
+        Schema::create('site_entrances', function (Blueprint $table) {
             $table->id();
-            $table->text('data')->nullable();
+            $table->unsignedBigInteger('ip');
+            $table->foreign('ip')->references('id')->on('ips');
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tracks');
+        Schema::dropIfExists('site_entrances');
     }
 };

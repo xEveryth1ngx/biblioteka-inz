@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Api</title>
+    <title>Strona testowa</title>
     @vite('resources/css/app.css')
 </head>
 
@@ -60,7 +60,7 @@
             <label for="message" class="block mb-2">Wiadomość:</label>
             <textarea id="message" name="message" rows="4" required class="w-full p-2 mb-4 border rounded"></textarea>
 
-            <button type="submit" onclick="trackActivity()" class="bg-gray-800 text-white py-2 px-4 rounded cursor-pointer transition duration-500 hover:bg-gray-700">Wyślij</button>
+            <button type="submit" class="bg-gray-800 text-white py-2 px-4 rounded cursor-pointer transition duration-500 hover:bg-gray-700">Wyślij</button>
         </form>
     </div>
     <footer class="mt-8 bg-gray-800 text-white text-center py-4">

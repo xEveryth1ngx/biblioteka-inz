@@ -7,6 +7,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const elementType = targetElement.tagName.toLowerCase();
         const elementId = targetElement.id || null;
         const elementClasses = Array.from(targetElement.classList);
+        const page = window.location.href;
+        const x = event.clientX;
+        const y = event.clientY;
+        const maxX = window.innerWidth;
+        const maxY = window.innerHeight;
 
         // Tworzymy obiekt z informacjami
         const clickInfo = {
@@ -15,9 +20,13 @@ document.addEventListener("DOMContentLoaded", function () {
             elementId,
             elementClasses,
             timestamp: new Date().toISOString(),
+            page,
+            x,
+            y,
+            width: maxX,
+            height: maxY,
         };
 
-        console.log("chuj");
         // Wysyłamy dane do API
         sendToApi(clickInfo);
 
