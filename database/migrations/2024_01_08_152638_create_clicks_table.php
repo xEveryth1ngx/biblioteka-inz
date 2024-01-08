@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('clicks', function (Blueprint $table) {
             $table->id();
             $table->string('element_type');
-            $table->string('element_id');
-            $table->string('element_classes');
+            $table->string('element_id')->nullable();
+            $table->string('element_classes')->nullable();
             $table->unsignedBigInteger('page');
             $table->foreign('page')->references('id')->on('pages');
             $table->unsignedBigInteger('x_axis');

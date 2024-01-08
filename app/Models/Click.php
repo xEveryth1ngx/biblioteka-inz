@@ -14,6 +14,7 @@ class Click extends Model
         'element_type',
         'element_id',
         'element_classes',
+        'page',
         'y_axis',
         'x_axis',
         'width',

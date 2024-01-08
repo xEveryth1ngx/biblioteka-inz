@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Funkcja do wysyłania danych do API
     const sendToApi = (data) => {
-        const apiUrl = "/api/track"; // Podaj rzeczywisty endpoint API
+        const apiUrl = "/api/click"; // Podaj rzeczywisty endpoint API
 
         // Używamy metody Fetch do wysłania danych
         fetch(apiUrl, {

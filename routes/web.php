@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TestPageController;
 use App\Http\Controllers\TrackController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +19,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/track', [TrackController::class, 'index']);
+Route::get('/test', [TestPageController::class, 'index']);
