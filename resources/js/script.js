@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const siteEntrance = () => {
+        sendToApi({}, "/api/entrance");
+
+        console.log('request sent');
+    }
+
     // Funkcja do śledzenia kliknięć
     const trackClick = (event) => {
         // Pobieramy informacje o klikniętym elemencie
@@ -28,15 +34,13 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         // Wysyłamy dane do API
-        sendToApi(clickInfo);
+        sendToApi(clickInfo, "/api/click");
 
         e.preventDefault();
     };
 
     // Funkcja do wysyłania danych do API
-    const sendToApi = (data) => {
-        const apiUrl = "/api/click"; // Podaj rzeczywisty endpoint API
-
+    const sendToApi = (data, apiUrl) => {
         // Używamy metody Fetch do wysłania danych
         fetch(apiUrl, {
             method: "POST",
@@ -56,4 +60,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Dodajemy nasłuchiwanie kliknięć na całej stronie
     document.body.addEventListener("click", trackClick);
+    siteEntrance();
 });

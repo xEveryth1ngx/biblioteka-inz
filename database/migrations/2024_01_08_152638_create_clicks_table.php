@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('element_type');
             $table->string('element_id')->nullable();
             $table->string('element_classes')->nullable();
-            $table->unsignedBigInteger('page');
-            $table->foreign('page')->references('id')->on('pages');
+            $table->unsignedBigInteger('page_id');
+            $table->foreign('page_id')->references('id')->on('pages');
             $table->unsignedBigInteger('x_axis');
             $table->unsignedBigInteger('y_axis');
             $table->unsignedBigInteger('width');

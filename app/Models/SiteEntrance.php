@@ -10,6 +10,10 @@ class SiteEntrance extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'ip_id',
+    ];
+
     public function ip(): BelongsTo
     {
         return $this->belongsTo(Ip::class);

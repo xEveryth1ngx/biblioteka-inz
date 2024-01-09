@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     let maxPercentageGlobal = 0;
     let currentInViewElement = null;
+    const page = window.location.href;
 
     function getScrollPercent() {
         let h = document.documentElement,
@@ -18,9 +19,36 @@ document.addEventListener("DOMContentLoaded", function () {
             maxPercentageGlobal = percentageScrolled;
         }
 
-        console.clear(); // Clear console for better readability
-        console.log('Current in-view element:', currentInViewElement);
-        console.log('Percentage of page scrolled:', percentageScrolled.toFixed(2) + '%');
-        console.log('Max percentage of page scrolled:', maxPercentageGlobal.toFixed(2) + '%')
+        // console.clear(); // Clear console for better readability
+        // console.log('Current in-view element:', currentInViewElement);
+        // console.log('Percentage of page scrolled:', percentageScrolled.toFixed(2) + '%');
+        // console.log('Max percentage of page scrolled:', maxPercentageGlobal.toFixed(2) + '%')
     });
+
+    const sendToApi = (data) => {
+        const apiUrl = "/api/scroll"; // Podaj rzeczywisty endpoint API
+
+        // Używamy metody Fetch do wysłania danych
+        fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                console.log("Dane zostały wysłane do API:", responseData);
+            })
+            .catch((error) => {
+                console.error("Błąd podczas wysyłania danych do API:", error);
+            });
+    };
+
+    setInterval(() => {
+        sendToApi({
+            maxScroll: maxPercentageGlobal.toFixed(),
+            page: page,
+        });
+    }, 5000);
 });

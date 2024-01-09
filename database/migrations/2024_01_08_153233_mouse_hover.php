@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('mouse_hovers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('page');
-            $table->foreign('page')->references('id')->on('pages');
+            $table->unsignedBigInteger('page_id');
+            $table->foreign('page_id')->references('id')->on('pages');
             $table->unsignedBigInteger('x_axis');
             $table->unsignedBigInteger('y_axis');
             $table->unsignedBigInteger('width');

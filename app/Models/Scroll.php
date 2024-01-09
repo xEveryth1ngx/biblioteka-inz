@@ -11,7 +11,9 @@ class Scroll extends Model
     use HasFactory;
 
     protected $fillable = [
-        'max_scroll'
+        'max_scroll',
+        'page_id',
+        'ip_id',
     ];
 
     public function page(): BelongsTo

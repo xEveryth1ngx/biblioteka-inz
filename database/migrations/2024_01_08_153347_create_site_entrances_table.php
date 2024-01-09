@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('site_entrances', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('ip');
-            $table->foreign('ip')->references('id')->on('ips');
+            $table->unsignedBigInteger('ip_id');
+            $table->foreign('ip_id')->references('id')->on('ips');
             $table->timestamps();
         });
     }
