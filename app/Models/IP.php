@@ -20,4 +20,9 @@ class IP extends Model
     {
         return $this->hasMany(SiteEntrance::class);
     }
+
+    public function scroll(): HasMany
+    {
+        return $this->hasMany(Scroll::class);
+    }
 }

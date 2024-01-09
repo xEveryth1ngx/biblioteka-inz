@@ -20,4 +20,9 @@ class Scroll extends Model
     {
         return $this->belongsTo(Page::class);
     }
+
+    public function ip(): BelongsTo
+    {
+        return $this->belongsTo(Ip::class);
+    }
 }
