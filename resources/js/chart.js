@@ -164,4 +164,56 @@ document.addEventListener("DOMContentLoaded", async function () {
             }],
         })
     };
+
+
+    // Clicked heat map
+    let clickMapSelect = document.querySelector('#chart_click_map_select');
+
+    options = {
+        chart: {
+            background: '#374151',
+            type: 'heatmap',
+        },
+        theme: {
+            mode: 'dark',
+        },
+        series: [
+            {
+                name: "Series 1",
+                data: [{
+                    x: 'W1',
+                    y: 22
+                }, {
+                    x: 'W2',
+                    y: 29
+                }, {
+                    x: 'W3',
+                    y: 13
+                }, {
+                    x: 'W4',
+                    y: 32
+                }]
+            },
+            {
+                name: "Series 2",
+                data: [{
+                    x: 'W1',
+                    y: 43
+                }, {
+                    x: 'W2',
+                    y: 43
+                }, {
+                    x: 'W3',
+                    y: 43
+                }, {
+                    x: 'W4',
+                    y: 43
+                }]
+            }
+        ]
+    };
+
+    const clickMapChart = new ApexCharts(document.querySelector("#chart_click_map"), options);
+
+    clickMapChart.render();
 });

@@ -88,4 +88,40 @@ class ChartController extends Controller
             'mostClicked' => $mostClicked,
         ]);
     }
+
+    public function getClickMap(Request $request, int $range)
+    {
+        $dateRange = match ($range) {
+            RangeEnum::WEEK->value => now()->subDays(7),
+            RangeEnum::MONTH->value => now()->subDays(30),
+            RangeEnum::ALL->value => now()->subDays(365),
+            default => now()->subDays(),
+        };
+
+        $clickCoordinates = Click::select(
+            ['x', 'y', 'height', 'width']
+        )
+            ->get()
+            ->toArray();
+
+        $maxHeight = 0;
+        $maxWidth = 0;
+        foreach ($clickCoordinates as $data) {
+            $data['height'] > $maxHeight ? $maxHeight = $data['height'] : null;
+            $data['width'] > $maxWidth ? $maxWidth = $data['width'] : null;
+        }
+
+        foreach ($clickCoordinates as &$data) {
+            $normalizedHeight = $maxHeight / $data['height'];
+            $normalizedWidth = $maxWidth / $data['width'];
+
+            $data['x'] = $data['x'] * $normalizedWidth;
+            $data['y'] = $data['y'] * $normalizedHeight;
+        }
+
+
+        return response()->json([
+            'clickMap' => $clickMap,
+        ]);
+    }
 }

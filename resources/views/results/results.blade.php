@@ -62,8 +62,24 @@
                 </div>
             </div>
 
-
             <div id="chart_most_clicked" class="rounded"></div>
+        </div>
+
+        <div class="w-3/4 mt-5">
+            <div class="flex justify-between items-center mb-3">
+                <label for="chart_click_map" class="text-white text-2xl">Mapa cieplna kliknięć</label>
+                <div class="flex justify-center items-center w-1/2">
+                    <label for="chart_click_map_select" class="text-white mr-2">Okres</label>
+                    <select id="chart_click_map_select" class="w-1/2 appearance-none bg-gray-800 border border-gray-600 text-white py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-gray-700 focus:border-gray-500">
+                        <option value="1" selected>Dzisiaj</option>
+                        <option value="2">Ostatni tydzień</option>
+                        <option value="3">Ostatni miesiąc</option>
+                        <option value="4">Wszystkie rekordy</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="chart_click_map" class="rounded"></div>
         </div>
     </main>
 
