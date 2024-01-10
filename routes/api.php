@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\ClickController;
 use App\Http\Controllers\ScrollController;
 use App\Http\Controllers\SiteEntranceController;
@@ -25,3 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/click', ClickController::class);
 Route::post('/scroll', ScrollController::class);
 Route::post('/entrance', SiteEntranceController::class);
+
+Route::get('/entrance/{range}', [ChartController::class, 'getEntrances']);
+Route::get('/click/{range}', [ChartController::class, 'getClicks']);
+Route::get('/most-clicked/{range}', [ChartController::class, 'getMostClicked']);

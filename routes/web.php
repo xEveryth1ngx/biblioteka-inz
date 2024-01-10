@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\TestPageController;
 use App\Http\Controllers\TrackController;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,5 @@ Route::get('/', function () {
 });
 
 Route::get('/test', [TestPageController::class, 'index']);
+
+Route::get('/results', [ChartController::class, 'index']);
