@@ -134,6 +134,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             mode: 'dark',
         },
         series: [{
+            name: 'kliknięcia',
             data: data
         }]
     };
@@ -153,6 +154,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         await mostClickedChart.updateOptions({
             series: [{
+                name: 'kliknięcia',
                 data: data.mostClicked.map(item => {
                     return {
                         x: `${item.element_type} ${item.element_id ? '#' + item.element_id : ''} ${item.element_classes}`,
