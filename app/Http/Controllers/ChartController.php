@@ -78,7 +78,7 @@ class ChartController extends Controller
             ['element_type', 'element_id', 'element_classes']
         )
             ->select(['element_type', 'element_id', 'element_classes', DB::raw('count(*) as total')])
-            ->where('created_at', '>', $dateRange->toDateString())
+            ->where('created_at', '>=', $dateRange->toDateString())
             ->orderByDesc('total')
             ->get()
             ->take(5)
@@ -99,26 +99,39 @@ class ChartController extends Controller
         };
 
         $clickCoordinates = Click::select(
-            ['x', 'y', 'height', 'width']
+            ['x_axis', 'y_axis', 'height', 'width']
         )
+            ->where('created_at', '>=', $dateRange->toDateString())
             ->get()
             ->toArray();
 
         $maxHeight = 0;
         $maxWidth = 0;
         foreach ($clickCoordinates as $data) {
-            $data['height'] > $maxHeight ? $maxHeight = $data['height'] : null;
-            $data['width'] > $maxWidth ? $maxWidth = $data['width'] : null;
+            $maxHeight = max($maxHeight, $data['height']);
+            $maxWidth = max($maxWidth, $data['width']);
         }
 
-        foreach ($clickCoordinates as &$data) {
+        foreach ($clickCoordinates as $data) {
             $normalizedHeight = $maxHeight / $data['height'];
             $normalizedWidth = $maxWidth / $data['width'];
 
-            $data['x'] = $data['x'] * $normalizedWidth;
-            $data['y'] = $data['y'] * $normalizedHeight;
+            $data['x_axis'] = $data['x_axis'] * $normalizedWidth;
+            $data['y_axis'] = $data['y_axis'] * $normalizedHeight;
         }
 
+        $gridSize = 10;
+        $cellWidth = $maxWidth / $gridSize;
+        $cellHeight = $maxHeight / $gridSize;
+
+        $clickMap = array_fill(0, $gridSize, array_fill(0, $gridSize, 0));
+
+        foreach ($clickCoordinates as $data) {
+            $cellX = min((int)($data['x_axis'] / $cellWidth), $gridSize - 1);
+            $cellY = min((int)($data['y_axis'] / $cellHeight), $gridSize - 1);
+
+            $clickMap[$cellY][$cellX]++; // Fix the order of indices
+        }
 
         return response()->json([
             'clickMap' => $clickMap,

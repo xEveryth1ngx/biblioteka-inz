@@ -30,3 +30,4 @@ Route::post('/entrance', SiteEntranceController::class);
 Route::get('/entrance/{range}', [ChartController::class, 'getEntrances']);
 Route::get('/click/{range}', [ChartController::class, 'getClicks']);
 Route::get('/most-clicked/{range}', [ChartController::class, 'getMostClicked']);
+Route::get('/click-map/{range}', [ChartController::class, 'getClickMap']);

@@ -1,5 +1,14 @@
 import ApexCharts from 'apexcharts';
 
+function getRandomColor() {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
     // Site entrances
     let entranceSelect = document.querySelector('#chart_entrances_select');
@@ -169,48 +178,64 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Clicked heat map
     let clickMapSelect = document.querySelector('#chart_click_map_select');
 
+    data = await fetch('/api/click-map/' + clickMapSelect.value, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(response => response.json());
+
+    console.log(data.clickMap)
+
+    let maxValue = 0;
+    for (let row of data.clickMap) {
+        for (let key in row) {
+            if (row[key] > maxValue) {
+                maxValue = row[key];
+            }
+        }
+    }
+
+    const numSegments = 5;
+    const intervalSize = Math.ceil(maxValue / numSegments);
+    console.log(intervalSize)
+
+    const colorScale = Array.from({ length: numSegments }, (_, index) => ({
+        from: index * intervalSize,
+        to: (index + 1) * intervalSize,
+        color: getRandomColor() // Use a function to generate random colors or specify your own color logic
+    }));
+
+    const dataClickMap = Object.entries(data.clickMap).reverse().map(([key, value]) => {
+        return {
+            name: key,
+            data: Object.entries(value).map(([key, value]) => {
+                return {
+                    x: key,
+                    y: value,
+                }
+            })
+        }
+    });
+
+    console.log(colorScale)
+
     options = {
         chart: {
             background: '#374151',
             type: 'heatmap',
         },
+        plotOptions: {
+            heatmap: {
+                colorScale: {
+                    ranges: colorScale
+                }
+            }
+        },
         theme: {
             mode: 'dark',
         },
-        series: [
-            {
-                name: "Series 1",
-                data: [{
-                    x: 'W1',
-                    y: 22
-                }, {
-                    x: 'W2',
-                    y: 29
-                }, {
-                    x: 'W3',
-                    y: 13
-                }, {
-                    x: 'W4',
-                    y: 32
-                }]
-            },
-            {
-                name: "Series 2",
-                data: [{
-                    x: 'W1',
-                    y: 43
-                }, {
-                    x: 'W2',
-                    y: 43
-                }, {
-                    x: 'W3',
-                    y: 43
-                }, {
-                    x: 'W4',
-                    y: 43
-                }]
-            }
-        ]
+        series: dataClickMap,
     };
 
     const clickMapChart = new ApexCharts(document.querySelector("#chart_click_map"), options);
