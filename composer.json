@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "xeveryth1ngx/user-traffic-collector",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "A library for collecting user traffic data",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
