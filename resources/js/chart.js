@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     chart.render();
 
     entranceSelect.onchange =  async (e) => {
-        console.log('change event')
         data = await fetch('/api/entrance/' + entranceSelect.value, {
             method: 'GET',
             headers: {
@@ -71,8 +70,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }).then(response => response.json());
 
-    console.log(data)
-
     options = {
         chart: {
             type: 'line',
@@ -95,7 +92,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     clickChart.render();
 
     clicksSelect.onchange =  async (e) => {
-        console.log('change event')
         data = await fetch('/api/click/' + clicksSelect.value, {
             method: 'GET',
             headers: {
@@ -125,7 +121,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }).then(response => response.json());
 
-    console.log(data)
 
     data = data.mostClicked.map(item => {
         return {
@@ -153,7 +148,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     mostClickedChart.render();
 
     mostClickedSelect.onchange =  async (e) => {
-        console.log('change event')
         data = await fetch('/api/most-clicked/' + mostClickedSelect.value, {
             method: 'GET',
             headers: {
@@ -185,40 +179,47 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }).then(response => response.json());
 
-    console.log(data.clickMap)
-
-    let maxValue = 0;
-    for (let row of data.clickMap) {
-        for (let key in row) {
-            if (row[key] > maxValue) {
-                maxValue = row[key];
+    const generateColorLabels = (data) => {
+        let maxValue = 0;
+        for (let row of data) {
+            for (let key in row) {
+                if (row[key] > maxValue) {
+                    maxValue = row[key];
+                }
             }
         }
+
+        const colors = [
+            '#ff0000',
+            '#FF4500',
+            '#FFFF00',
+            '#9ACD32',
+            '#008000',
+        ]
+
+        const numSegments = 5;
+        const intervalSize = Math.ceil(maxValue / numSegments);
+
+        return Array.from({length: numSegments}, (_, index) => ({
+            from: (index * intervalSize),
+            to: (index + 1) * intervalSize,
+            color: colors[index] // Use a function to generate random colors or specify your own color logic
+        }));
     }
 
-    const numSegments = 5;
-    const intervalSize = Math.ceil(maxValue / numSegments);
-    console.log(intervalSize)
-
-    const colorScale = Array.from({ length: numSegments }, (_, index) => ({
-        from: index * intervalSize,
-        to: (index + 1) * intervalSize,
-        color: getRandomColor() // Use a function to generate random colors or specify your own color logic
-    }));
-
-    const dataClickMap = Object.entries(data.clickMap).reverse().map(([key, value]) => {
-        return {
-            name: key,
-            data: Object.entries(value).map(([key, value]) => {
-                return {
-                    x: key,
-                    y: value,
-                }
-            })
-        }
-    });
-
-    console.log(colorScale)
+    const generateHeatMapData = (data) => {
+        return Object.entries(data).reverse().map(([key, value]) => {
+            return {
+                name: key,
+                data: Object.entries(value).map(([key, value]) => {
+                    return {
+                        x: key,
+                        y: value,
+                    }
+                })
+            }
+        });
+    }
 
     options = {
         chart: {
@@ -228,17 +229,30 @@ document.addEventListener("DOMContentLoaded", async function () {
         plotOptions: {
             heatmap: {
                 colorScale: {
-                    ranges: colorScale
+                    ranges: generateColorLabels(data.clickMap)
                 }
             }
         },
         theme: {
             mode: 'dark',
         },
-        series: dataClickMap,
+        series: generateHeatMapData(data.clickMap),
     };
 
     const clickMapChart = new ApexCharts(document.querySelector("#chart_click_map"), options);
 
     clickMapChart.render();
+
+    clickMapSelect.onchange =  async (e) => {
+        data = await fetch('/api/click-map/' + clickMapSelect.value, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(response => response.json());
+
+        await clickMapChart.updateOptions({
+            series: generateHeatMapData(data.clickMap),
+        })
+    };
 });

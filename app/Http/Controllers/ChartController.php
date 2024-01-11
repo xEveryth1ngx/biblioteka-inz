@@ -130,7 +130,7 @@ class ChartController extends Controller
             $cellX = min((int)($data['x_axis'] / $cellWidth), $gridSize - 1);
             $cellY = min((int)($data['y_axis'] / $cellHeight), $gridSize - 1);
 
-            $clickMap[$cellY][$cellX]++; // Fix the order of indices
+            $clickMap[$cellY][$cellX]++;
         }
 
         return response()->json([
