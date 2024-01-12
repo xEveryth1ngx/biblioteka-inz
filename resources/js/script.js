@@ -1,14 +1,11 @@
+const pageName = 'http://127.0.0.1:8000';
+
 document.addEventListener("DOMContentLoaded", function () {
     const siteEntrance = () => {
-        sendToApi({}, "/api/entrance");
-
-        console.log('request sent');
+        sendToApi({}, pageName + "/api/entrance");
     }
 
-    // Funkcja do śledzenia kliknięć
     const trackClick = (event) => {
-        // Pobieramy informacje o klikniętym elemencie
-
         const targetElement = event.target;
         const elementType = targetElement.tagName.toLowerCase();
         const elementId = targetElement.id || null;
@@ -19,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const maxX = window.innerWidth;
         const maxY = window.innerHeight;
 
-        // Tworzymy obiekt z informacjami
         const clickInfo = {
             type: "click",
             elementType,
@@ -33,32 +29,53 @@ document.addEventListener("DOMContentLoaded", function () {
             height: maxY,
         };
 
-        // Wysyłamy dane do API
-        sendToApi(clickInfo, "/api/click");
+        sendToApi(clickInfo, pageName + "/api/click");
 
         e.preventDefault();
     };
 
-    // Funkcja do wysyłania danych do API
     const sendToApi = (data, apiUrl) => {
-        // Używamy metody Fetch do wysłania danych
         fetch(apiUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "*/*",
+                'Access-Control-Allow-Origin': '*',
             },
             body: JSON.stringify(data),
         })
             .then((response) => response.json())
-            .then((responseData) => {
-                console.log("Dane zostały wysłane do API:", responseData);
-            })
             .catch((error) => {
-                console.error("Błąd podczas wysyłania danych do API:", error);
+                console.log("Błąd podczas wysyłania danych do API:", error);
             });
     };
 
-    // Dodajemy nasłuchiwanie kliknięć na całej stronie
+    let maxPercentageGlobal = 0;
+    let currentInViewElement = null;
+    const page = window.location.href;
+
+    function getScrollPercent() {
+        let h = document.documentElement,
+            b = document.body,
+            st = 'scrollTop',
+            sh = 'scrollHeight';
+        return (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight) * 100;
+    }
+
+    window.addEventListener('scroll', function () {
+        const percentageScrolled = getScrollPercent();
+        if (percentageScrolled >= maxPercentageGlobal) {
+            maxPercentageGlobal = percentageScrolled;
+        }
+    });
+
     document.body.addEventListener("click", trackClick);
     siteEntrance();
+
+    setInterval(() => {
+        sendToApi({
+            maxScroll: maxPercentageGlobal.toFixed(),
+            page: page,
+        }, pageName + '/api/scroll');
+    }, 5000);
 });

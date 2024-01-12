@@ -12,17 +12,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     window.addEventListener('scroll', function () {
-        // updateInViewElement();
-        // const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
         const percentageScrolled = getScrollPercent();
         if (percentageScrolled >= maxPercentageGlobal) {
             maxPercentageGlobal = percentageScrolled;
         }
-
-        // console.clear(); // Clear console for better readability
-        // console.log('Current in-view element:', currentInViewElement);
-        // console.log('Percentage of page scrolled:', percentageScrolled.toFixed(2) + '%');
-        // console.log('Max percentage of page scrolled:', maxPercentageGlobal.toFixed(2) + '%')
     });
 
     const sendToApi = (data) => {
