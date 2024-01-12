@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             mode: 'dark',
         },
         series: [{
-            name: 'wejścia',
+            name: 'entrances',
             data: Object.entries(data.entrancesPerDay).map(([key, value]) => value),
         }],
         xaxis: {
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         await chart.updateOptions({
             series: [{
-                name: 'wejścia',
+                name: 'entrances',
                 data: Object.entries(data.entrancesPerDay).map(([key, value]) => value),
             }],
             xaxis: {
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             mode: 'dark',
         },
         series: [{
-            name: 'kliknięcia',
+            name: 'clicks',
             data: Object.entries(data.clicksPerDay).map(([key, value]) => value),
         }],
         xaxis: {
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         await clickChart.updateOptions({
             series: [{
-                name: 'kliknięcia',
+                name: 'clicks',
                 data: Object.entries(data.clicksPerDay).map(([key, value]) => value),
             }],
             xaxis: {
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             mode: 'dark',
         },
         series: [{
-            name: 'kliknięcia',
+            name: 'clicks',
             data: data
         }]
     };
@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         await mostClickedChart.updateOptions({
             series: [{
-                name: 'kliknięcia',
+                name: 'clicks',
                 data: data.mostClicked.map(item => {
                     return {
                         x: `${item.element_type} ${item.element_id ? '#' + item.element_id : ''} ${item.element_classes}`,
