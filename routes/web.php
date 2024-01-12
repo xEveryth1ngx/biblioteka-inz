@@ -16,10 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [ChartController::class, 'index']);
 
 Route::get('/test', [TestPageController::class, 'index']);
 
-Route::get('/results', [ChartController::class, 'index']);
